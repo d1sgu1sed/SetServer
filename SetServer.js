@@ -16,17 +16,19 @@ server.post("/user/register", async (params, answer) => {
       return answer.status(400).json({status:"error", message:"Введите данные пользователя!"});
 
     if (users.find(user => user.name === name))
-    return res.status(400).json({message:"Пользователь с таким именем уже существует"});
+    return answer.status(400).json({status:"error", message:"Пользователь с таким именем уже существует"});
 
     const token = tokens.sign({name}, "somekey");
     const user = { name: name , token: token, pts: 0};
     users.push(user);
 
     answer.json({status: "ok", token: token});
+    // answer.json({user: user});
   } catch(err){
     console.log(err);
-    res.status(500).json({
+    answer.status(500).json({
       status: "error",
+      message: "Ошибка на сервере"
     });
   }
 
@@ -39,15 +41,15 @@ server.get("/", async (params, answer) => {
 server.listen(5000, () => console.log("Запущен на порте 5000"));
 
 
-const userData = {
-  name: 'username',
-  pass: 'password123'
-};
-
-axios.post('http://localhost:5000/user/register', userData)
-.then(response => {
-  console.log(response.data); // Выводим ответ от сервера
-})
-.catch(error => {
-  console.error('Ошибка:', error);
-});
+// const userData = {
+//   name: 'us',
+//   pass: 'password123'
+// };
+//
+// axios.post('http://localhost:5000/user/register', userData)
+// .then(response => {
+//   console.log(response.data); // Выводим ответ от сервера
+// })
+// .catch(error => {
+//   console.error('Ошибка:', error);
+// });
