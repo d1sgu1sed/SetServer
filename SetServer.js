@@ -33,6 +33,34 @@ function addToBoard() {
     game_board.push(cards.shift());
 }
 
+function isSet(cards) {
+  if (cards.length === 3) {
+    const a = cards[0];
+    const b = cards[1];
+    const c = cards[2];
+
+    const colorCh = (a.color === b.color && b.color === c.color) ||
+      (a.color !== b.color && c.color !== b.color && a.color !== c.color);
+
+    const shapeCh = (a.shape === b.shape && b.shape === c.shape) ||
+      (a.shape !== b.shape && c.shape !== b.shape && a.shape !== c.shape);
+
+    const countCh = (a.count === b.count && b.count === c.count) ||
+      (a.count !== b.count && c.count !== b.count && a.count !== c.count);
+
+    const fillCh = (a.fill === b.fill && b.fill === c.fill) ||
+      (a.fill !== b.fill && c.fill !== b.fill && a.fill !== c.fill);
+
+    if (colorCh && shapeCh && countCh && fillCh)
+      return true;
+    else
+      return false;
+
+  } else {
+    return false;
+  }
+}
+
 server.post("/user/register", async (params, answer) => {
   try {
     const { name, pass } = params.body;
